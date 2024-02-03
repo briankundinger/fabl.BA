@@ -1,6 +1,6 @@
 # Code Supplement for Bayesian Analysis
 
-I have prepared code for running the Fast Beta Linkage (fabl) method to accompany our submission to Bayesian Analysis. The required functions are stored in the *R* folder, and they can be loaded by selecting **Build -> Load All** from the top menu of RStudio.
+This repo includes code to accompany our manuscript, “Efficient and Scalable Bipartite Matching through Fast Beta Linkage (fabl)”. The required functions are stored in the *R* folder, and they can be loaded by selecting **Build -> Load All** from the top menu of RStudio.
 
 In particular;
 
