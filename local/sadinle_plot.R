@@ -2,24 +2,11 @@ library(tidyverse)
 
 files <- list.files("out/sadinle_sim/", full.names = T)
 results <- lapply(files, readRDS) %>%
-  do.call(rbind, .) %>%
-  filter(method != "BRL",
-         method != "BRL_partial")
-
-# results$precision[results$recall == 0] <- 0
-# results$`f-measure`[results$recall == 0] <- 0
-#
-for_plot <- unique(results$method)[c(2, 4, 6, 8)]
+  do.call(rbind, .)
 
 results_df <- results %>%
   select(-RR, -time) %>%
-  filter(method %in% for_plot) %>%
-  mutate(method = case_when(
-    method == "brl_hash" ~ "BRL",
-    method == "svi" ~ "svabl",
-    TRUE ~ method
-  )) %>%
-  mutate(method = factor(method, c("BRL", "fabl", "vabl", "svabl"))) %>%
+  mutate(method = factor(method, c("BRL", "fabl")) %>%
   pivot_longer(cols = 1:3, names_to = "metric") %>%
   group_by(method, metric, error, overlap) %>%
   summarize(avg = mean(value, na.rm = T),
@@ -56,10 +43,7 @@ results_df %>%
         plot.subtitle = element_text(hjust = .5)) +
   scale_color_brewer(palette="Set1")
 
-ggsave("figures/sadinle_sim.png")
-ggsave("../vabl/stocastic-vabl/jrssa/figures/sadinle_sim.png")
-
-for_plot <- unique(results$method)[c(3, 5, 7, 9)]
+for_plot <- c("BRL_partial", "fabl_partial")
 
 results_df <- results %>%
   rename(NPV = recall) %>%
@@ -68,13 +52,10 @@ results_df <- results %>%
   select(-time, -`f-measure`, -RR) %>%
   filter(method %in% for_plot) %>%
   mutate(method = case_when(
-    method == "brl_hash_partial" ~ "BRL",
-    method == "svi_partial" ~ "svabl",
-    method == "vabl_partial" ~ "vabl",
-    method == "fabl_partial" ~ "fabl",
-    TRUE ~ method
+    method == "BRL_partial" ~ "BRL",
+    method == "fabl_partial" ~ "fabl"
   )) %>%
-  mutate(method = factor(method, c("BRLhash", "fabl", "vabl", "svabl"))) %>%
+  mutate(method = factor(method, c("BRLhash", "fabl")) %>%
   pivot_longer(cols = c(1, 2, 6), names_to = "metric") %>%
   group_by(method, metric, error, overlap) %>%
   summarize(avg = mean(value, na.rm = T),
@@ -93,7 +74,6 @@ results_df <- results %>%
                                   c("90% Overlap", "50% Overlap", "10% Overlap")))
 
 
-
 results_df %>%
   ggplot(aes(x = metric, y = round(median, 3),
              ymin  = round(lower, 3), ymax = round(upper, 3),
@@ -109,7 +89,4 @@ results_df %>%
   theme(plot.title = element_text(hjust = .5),
         plot.subtitle = element_text(hjust = .5)) +
   scale_color_brewer(palette="Set1")
-
-ggsave("figures/sadinle_sim_partial.png")
-ggsave("../vabl/stocastic-vabl/jrssa/figures/sadinle_sim_partial.png")
 
