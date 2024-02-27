@@ -2,10 +2,6 @@
 #'
 hash_comparisons <- function(cd, R = NULL, all_patterns = FALSE){
 
-
-  if("brl" %in% algorithm){
-    R <- NULL
-  }
   indicators <- cd[[1]]
   N <- dim(indicators)[1]
   n1 <- cd[[2]]
@@ -62,11 +58,7 @@ hash_comparisons <- function(cd, R = NULL, all_patterns = FALSE){
           select(n) %>%
           pull()
         )
-    # select(n) %>%
-    # pull() %>%
-    # matrix(., nrow = P, ncol = n2, byrow = F)
 
-  #total_counts <- rowSums(hash_count_list)
   total_counts <- temp %>%
     group_by(hash_id, .drop = F) %>%
     count() %>%
@@ -101,24 +93,16 @@ hash_comparisons <- function(cd, R = NULL, all_patterns = FALSE){
       purrr::map(z, ~sei(.x, R))
     })}
 
-  # if(!("fabl" %in% algorithm) & !("brl" %in% algorithm)){
-  #   hash_to_file_1 <- NULL
-  # }
-
 
 
 
   patterns <- list(ohe = unique_patterns,
                    total_counts = total_counts,
-                   #pattern_counts_by_record = pattern_counts_by_record,
-                   #record_counts_by_pattern = record_counts_by_pattern,
                    hash_count_list = hash_count_list,
                    hash_to_file_1 = hash_to_file_1,
-                   flags = flags,
                    field_marker = field_marker,
                    n1 = n1,
-                   n2 = n2,
-                   pair_to_pattern = pair_to_pattern)
+                   n2 = n2)
   patterns
 
 }

@@ -1,7 +1,7 @@
 library(RecordLinkage)
 library(dplyr)
 library(stringr)
-library(fabl.BA)
+#library(fabl.BA)
 library(purrr)
 library(readr)
 library(BRL)
@@ -144,5 +144,6 @@ names(result_df) <- c("recall", "precision", "f-measure", "RR",
                       "time", "overlap", "method")
 result_df$error <- error
 
+result_df
 saveRDS(result_df, file = paste0("out/sadinle_sim/sim_",
                                       str_pad(i, 3, pad = "0")))

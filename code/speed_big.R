@@ -1,13 +1,13 @@
-library(fabl.BA)
+#library(fabl.BA)
 library(glue)
 library(BRL)
 
 #k = as.integer(Sys.getenv("SLURM_ARRAY_TASK_ID"))
-#k <- 1 # Choose an integer 1-7 to run a different simulation
+k <- 1 # Choose an integer 1-7 to run a different simulation
 n1_vals <- c(100, 500, 1000, 2000, 3000, 4000, 5000)
 n2_vals <- c(100, 500, 1000, 2000, 3000, 4000, 5000)
 
-for (k in 1:length(n1_vals)) {
+#for (k in 1:length(n1_vals)) {
   n1 <- n1_vals[k]
   n2 <- n2_vals[k]
 
@@ -57,4 +57,4 @@ for (k in 1:length(n1_vals)) {
   df <- rbind(brl_df, fabl_df)
   saveRDS(df,
           glue("out/speed_big/n_{stringr::str_pad(k, width = 2, pad = 0)}"))
-}
+#}
